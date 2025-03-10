@@ -2,8 +2,7 @@ const User = require("../model/usermodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const SECRET_KEY = "your_secret_key"; 
-
+const SECRET_KEY = "your_secret_key";
 
 exports.register = async (req, res) => {
   try {
@@ -21,7 +20,9 @@ exports.register = async (req, res) => {
     const newUser = new User({ name, email, password });
     await newUser.save();
 
-    return res.status(201).send({ message: "User created successfully", user: newUser });
+    return res
+      .status(201)
+      .send({ message: "User created successfully", user: newUser });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
@@ -32,7 +33,9 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).send({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .send({ message: "Email and password are required" });
     }
 
     const user = await User.findOne({ email });
