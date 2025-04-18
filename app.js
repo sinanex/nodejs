@@ -1,15 +1,18 @@
-const express = require("express");
+const express = require('express')
+const pool =require('./config/db')
 
-const mongoose = require("./config/db");
-const userRouts = require("./routs/userRouts");
-const prodcutRouts  =require('./routs/product')
 const app = express();
 app.use(express.json());
-app.use("/users", userRouts);
-app.use("/products",prodcutRouts)
 
-
-app.get("/", (req, res) => {
-  res.send("server running success");
+app.get('/products',async(req,res)=>{
+    try {
+        const result = await pool.query('SELECT * FROM product');
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error'); 
+    }
 });
-app.listen(9000, () => console.log("server running"));
+app.listen(9000, () => {
+    console.log(`Server running on port`);
+  });

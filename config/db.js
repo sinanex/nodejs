@@ -1,11 +1,13 @@
-const mongoose = require("mongoose");
+const { Pool } = require("pg");
 
- mongoose
-  .connect("mongodb://localhost:27017/users")
-  .then(() => {
-    console.log("db conncted success");
-  })
-  .catch((err) => console.log("db connection error", err));
+const pool = new Pool({
+  connectionString:
+    "postgresql://postgres:KXMuVeOvzCPXggEapYQennsZNjIFoCWf@maglev.proxy.rlwy.net:41678/railway",
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
+pool.connect()
 
-module.exports = mongoose
+module.exports = pool;
