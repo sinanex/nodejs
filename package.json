@@ -9,7 +9,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "pg": "^8.14.1"
+    "init": "^0.1.2",
+    "jsonwebtoken": "^9.0.2",
+    "npm": "^11.3.0",
+    "pg": "^8.15.6"
   }
 }
