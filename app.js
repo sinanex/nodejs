@@ -74,6 +74,40 @@ app.post("/register", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const userExist = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (userExist.rows.length === 0) {
+      return res.status(400).send({ message: "Invalid email or password" });
+    }
+
+    const validPassword = await bcrypt.compare(
+      password,
+      userExist.rows[0].password
+    );
+    if (!validPassword) {
+      return res.status(400).send({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { id: userExist.rows[0].id },
+      "process.env.JWT_SECRET",
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    res.send({ message: "User login successful", token: token });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 app.listen(9000, () => {
   console.log(`Server running on port`);
 });
